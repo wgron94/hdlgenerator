@@ -1,0 +1,33 @@
+System <NAME>
+{
+   // First define inputs/outputs
+   In {
+      <TYPE> <NAME>;
+      ...
+      <TYPE> <NAME>;
+   }
+
+   Out {
+      <TYPE> <NAME>;
+      ...
+      <TYPE> <NAME>;
+   }
+
+   // List the systems/machines that this system is comprised of
+   System <NAME> <localname>;
+   ...
+   System <NAME> <localname>;
+   Machine <NAME> <localname>;
+   ...
+   Machine <NAME> <localname>;
+
+   // Next define the interconnections between systems/machines
+   // Only constraint is that all system outputs need to be driven
+   <localname>.input.<inputname> = <localname>.output.<outputname>;
+   ...
+   <localname>.input.<inputname> = <localname>.output.<outputname>;
+
+   <Name of System>.output.<outputname> = <localname>.output.<outputname>;
+   ...
+   <Name of System>.output.<outputname> = <localname>.output.<outputname>;
+}
