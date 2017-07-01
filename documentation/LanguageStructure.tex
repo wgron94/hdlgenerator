@@ -1,2 +1,26 @@
 \section{Language Structure}
+This section defines how you express a state machine or system of state
+machines. A Moore machine can be defined using a set of six items. These are:
 
+\begin{itemize}
+   \item Finite set of states (S)
+   \item Initial state ($S_0$)
+   \item Finite input alphabet ($\Sigma$)
+   \item Finite ouitput alphabet ($\Lambda$)
+   \item Transition function ($T:S\times\Sigma\rightarrow S$)
+   \item Output function ($G:S \rightarrow \Lambda$)
+\end{itemize}
+
+Graphically this is shown below in Figure \ref{fig:MooreMachine}.
+
+\begin{figure}[h]
+   \centering
+   \includegraphics[scale=0.4]{MooreMachine}
+   \caption{Moore Machine}
+   \small{Taken from:://commons.wikimedia.org/wiki/File:Moore-Automat-en.svg}
+   \label{fig:MooreMachine}
+\end{figure}
+\FloatBarrier
+\subsection{State Machine Syntax}
+
+\subsection{System Syntax}
