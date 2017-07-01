@@ -1,0 +1,50 @@
+Machine <NAME> {
+   InputAlphabet {
+      <TYPE> <NAME>;
+      ...
+      <TYPE> <NAME>;
+   }
+
+   OutputAlphabet {
+      <TYPE> <NAME> = <DEFAULT>;
+      ...
+      <TYPE> <NAME> = <DEFAULT>;
+   }
+
+   States {
+      Names = <Comma separated list of names>;
+      InitialState = <One name from above>;
+      Reset = <async OR sync OR none>;
+      Clock = <Name of clock signal for HDL>;
+   }
+
+   TransitionLogic {
+      <StateName1>:
+         if <CONDITION>:
+            NextState = <STATE>;
+         else if <CONDITION>:
+            NextState = <STATE>;
+         ...
+         else:
+            NextState = <STATE>;
+      <StateName2>:
+         if <CONDITION>:
+            NextState = <STATE>;
+         else if <CONDITION>:
+            NextState = <STATE>;
+         ...
+         else:
+            NextState = <STATE>;
+      ...
+   }
+
+   OutputLogic {
+      <StateName1>:
+         <OutputName> = <VALUE>;
+         ...
+      <StateName2>:
+         <OutputName> = <VALUE>;
+         ...
+      ...
+   }
+}
