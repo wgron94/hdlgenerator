@@ -1,8 +1,18 @@
 machine testSM {
    inputs{
       bit testBit;
+      vector[5] testVector;
+      vector[0xA] testHex;
+      vector[0b11] testBin;
+      vector[011] testOctal;
+      integer testInt;
    }
-   outputs{}
+   outputs{
+      bit outputBit = 10;
+      bit bitTesting = 0;
+      integer outputInteger = 12;
+      vector[3] outputVector = 0b101;
+   }
    states{}
    transitions{}
    outputLogic{}

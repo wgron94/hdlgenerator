@@ -51,8 +51,11 @@ extern int yydebug;
     STATES = 261,
     TRANSITIONS = 262,
     OUTPUTLOGIC = 263,
-    TYPE = 264,
-    IDENTIFIER = 265
+    TYPEBIT = 264,
+    TYPEINTEGER = 265,
+    TYPEVECTOR = 266,
+    IDENTIFIER = 267,
+    INTEGER = 268
   };
 #endif
 
@@ -69,10 +72,13 @@ union YYSTYPE
    char* states;
    char* transitions;
    char* outputLogic;
-   char* type;
+   char* typeBit;
+   char* typeInteger;
+   char* typeVector;
    char* str;
+   int integer;
 
-#line 76 "parser.tab.h" /* yacc.c:1909  */
+#line 82 "parser.tab.h" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1

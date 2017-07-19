@@ -18,8 +18,11 @@
    char* states;
    char* transitions;
    char* outputLogic;
-   char* type;
+   char* typeBit;
+   char* typeInteger;
+   char* typeVector;
    char* str;
+   int integer;
 }
 
 %token <machine> MACHINE /* Machine keyword  */
@@ -28,8 +31,11 @@
 %token <states> STATES /* States keyword  */
 %token <transitions> TRANSITIONS /* Transitions keyword  */
 %token <outputLogic> OUTPUTLOGIC /* OutputLogic keyword  */
-%token <type> TYPE /* Input/output types */
+%token <typeBit> TYPEBIT /* Input/output type bit */
+%token <typeInteger> TYPEINTEGER /* Input/output type integer */
+%token <typeVector> TYPEVECTOR /* Input/output type vector */
 %token <str> IDENTIFIER /* Any expression */
+%token <integer> INTEGER /* Matches any integer */
 
 %% /* The grammar follows.  */
 complete_machine:
@@ -52,7 +58,12 @@ inputList:
    ;
 
 inputEntry:
-   TYPE IDENTIFIER ';' { printf("Input entry: TYPE: %s ID: %s", $1, $2); }
+   TYPEBIT IDENTIFIER ';' { printf("Input entry: TYPE: bit ID: %s", $2); }
+   | TYPEINTEGER IDENTIFIER ';' { printf("Input entry: TYPE: integer ID: %s", $2); }
+   | TYPEVECTOR '[' INTEGER ']'  IDENTIFIER ';'
+      {
+         printf("Input entry: TYPE: vector SIZE: %d ID: %s", $3, $5);
+      }
    ;
 
 /* Grammer for outputs{...} block */
@@ -62,7 +73,22 @@ outputs:
 
 outputList:
    %empty
-   | outputList IDENTIFIER
+   | outputList outputEntry
+   ;
+
+outputEntry:
+   TYPEBIT IDENTIFIER '=' INTEGER ';' 
+      {
+         printf( "Output: TYPE: bit ID: %s VALUE: %d", $2, $4 );
+      }
+   | TYPEINTEGER IDENTIFIER '=' INTEGER ';' 
+      {
+         printf( "Output: TYPE: integer ID: %s VALUE: %d", $2, $4 );
+      }
+   | TYPEVECTOR '[' INTEGER ']' IDENTIFIER '=' INTEGER ';' 
+      {
+         printf( "Output: TYPE: vector SIZE: %d ID: %s VALUE: %d", $3, $5, $7 );
+      }
    ;
 
 /* Grammer for states{...} block */
