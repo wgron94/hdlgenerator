@@ -1,21 +1,21 @@
 Machine <NAME> {
-   InputAlphabet {
+   inputs {
       <TYPE> <NAME>;
       ...
       <TYPE> <NAME>;
    }
 
-   OutputAlphabet {
+   outputs {
       <TYPE> <NAME> = <DEFAULT>;
       ...
       <TYPE> <NAME> = <DEFAULT>;
    }
 
-   States {
-      Names = <Comma separated list of names>;
-      InitialState = <One name from above>;
-      Reset = <async OR sync OR none>;
-      Clock = <Name of clock signal for HDL>;
+   states {
+      names = <Comma separated list of names>;
+      launch = <One name from above>;
+      <async or sync> reset <signal name>;
+      clock <Name of clock signal for HDL>;
    }
 
    TransitionLogic {
