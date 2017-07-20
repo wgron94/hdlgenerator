@@ -14,6 +14,15 @@ outputLogic { return OUTPUTLOGIC; }
 bit { return TYPEBIT; }
 integer { return TYPEINTEGER; }
 vector { return TYPEVECTOR; }
+names { return NAMES; }
+launch { return LAUNCH; }
+clock { return CLOCK; }
+async|sync {
+   yylval.resetMode = strdup( yytext );
+   return RESETMODE;
+}
+reset { return RESET; }
+
 
 [1-9][0-9]* { /* Decimal Integer */
    yylval.integer = atoi( yytext );
@@ -47,6 +56,7 @@ vector { return TYPEVECTOR; }
 \} { return '}'; }
 \[ { return '['; }
 \] { return ']'; }
+, { return ','; }
 
 . {}
 %%

@@ -21,6 +21,11 @@
    char* typeBit;
    char* typeInteger;
    char* typeVector;
+   char* names;
+   char* launch;
+   char* clock;
+   char* resetMode;
+   char* reset;
    char* str;
    int integer;
 }
@@ -34,6 +39,11 @@
 %token <typeBit> TYPEBIT /* Input/output type bit */
 %token <typeInteger> TYPEINTEGER /* Input/output type integer */
 %token <typeVector> TYPEVECTOR /* Input/output type vector */
+%token <names> NAMES /* Names keyword */
+%token <launch> LAUNCH /* Launch keyword */
+%token <clock> CLOCK /* Clock keyword */
+%token <resetMode> RESETMODE /* Either async or sync */
+%token <reset> RESET /* Reset keyword */
 %token <str> IDENTIFIER /* Any expression */
 %token <integer> INTEGER /* Matches any integer */
 
@@ -97,9 +107,18 @@ states:
    ;
 
 stateList:
-   %empty
-   | stateList IDENTIFIER
+   stateItem stateItem stateItem stateItem
+
+stateItem:
+   NAMES '=' listOfIdentifiers ';' { printf("Found names");}
+   | LAUNCH '=' IDENTIFIER ';' {printf("Found launch");}
+   | CLOCK '=' IDENTIFIER ';' {printf("Found clock");}
+   | RESETMODE RESET '=' IDENTIFIER ';' {printf("Found reset");}
    ;
+
+listOfIdentifiers:
+   IDENTIFIER { printf( "ID: %s", $1 ); }
+   | listOfIdentifiers ',' IDENTIFIER
 
 /* Grammer for transitions{...} block */
 transitions:
