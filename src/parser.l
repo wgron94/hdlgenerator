@@ -9,6 +9,7 @@ machine { return MACHINE; }
 inputs { return INPUTS; }
 outputs { return OUTPUTS; }
 states { return STATES; }
+state { return STATE; }
 transitions { return TRANSITIONS; }
 outputLogic { return OUTPUTLOGIC; }
 bit { return TYPEBIT; }
@@ -22,6 +23,8 @@ async|sync {
    return RESETMODE;
 }
 reset { return RESET; }
+if { return IF; }
+else { return ELSE; }
 
 
 [1-9][0-9]* { /* Decimal Integer */
@@ -57,6 +60,9 @@ reset { return RESET; }
 \[ { return '['; }
 \] { return ']'; }
 , { return ','; }
+\( { return '('; }
+\) { return ')'; }
+: { return ':'; }
 
 . {}
 %%

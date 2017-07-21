@@ -16,6 +16,7 @@
    char* inputs;
    char* outputs;
    char* states;
+   char* state;
    char* transitions;
    char* outputLogic;
    char* typeBit;
@@ -26,14 +27,18 @@
    char* clock;
    char* resetMode;
    char* reset;
+   char* _if;
+   char* _else;
    char* str;
    int integer;
 }
 
+/* Keywords */
 %token <machine> MACHINE /* Machine keyword  */
 %token <inputs> INPUTS /* Inputs keyword  */
 %token <outputs> OUTPUTS /* Outputs keyword  */
 %token <states> STATES /* States keyword  */
+%token <state> STATE /* State keyword */
 %token <transitions> TRANSITIONS /* Transitions keyword  */
 %token <outputLogic> OUTPUTLOGIC /* OutputLogic keyword  */
 %token <typeBit> TYPEBIT /* Input/output type bit */
@@ -44,8 +49,22 @@
 %token <clock> CLOCK /* Clock keyword */
 %token <resetMode> RESETMODE /* Either async or sync */
 %token <reset> RESET /* Reset keyword */
-%token <str> IDENTIFIER /* Any expression */
-%token <integer> INTEGER /* Matches any integer */
+%token <_if> IF /* If keyword */
+%token <_else> ELSE /* Else keyword */
+
+/* Operators */
+%left '|'
+%left '^'
+%left '&'
+%left '-' '+'
+%left '*' '/' '%'
+%right '~'
+%precedence NEG
+
+
+/* Misc */
+%token <str> IDENTIFIER /* Any valid name */
+%token <integer> INTEGER /* Any integer in decimal, binary, octal or hex */
 
 %% /* The grammar follows.  */
 complete_machine:
@@ -127,8 +146,33 @@ transitions:
 
 transitionsList:
    %empty
-   | transitionsList IDENTIFIER
+
+/* Comment out for now
+transitionsList:
+   stateBlock
+   | transitionsList stateBlock
    ;
+
+stateBlock:
+   IDENTIFIER ':' STATE '=' IDENTIFIER ';'
+   | IDENTIFIER ':' ifBlock
+
+ifBlock:
+   IF '(' expr ')' '{' action '}'
+   | IF '(' expr ')' '{' action '}' ELSE '{' action '}'
+   | ifBlock IF '(' expr ')' '{' action '}'
+   | ifBlock  IF '(' expr ')' '{' action '}' ELSE '{' action '}'
+
+expr:
+   IDENTIFIER
+   | INTEGER
+   | expr '+' expr
+   | expr '-' expr
+   | expr '&' expr
+   | expr '|' expr
+   | expr '^' expr
+
+*/
 
 
 /* Grammer for outputLogic{...} block */

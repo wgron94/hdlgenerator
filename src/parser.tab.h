@@ -49,18 +49,22 @@ extern int yydebug;
     INPUTS = 259,
     OUTPUTS = 260,
     STATES = 261,
-    TRANSITIONS = 262,
-    OUTPUTLOGIC = 263,
-    TYPEBIT = 264,
-    TYPEINTEGER = 265,
-    TYPEVECTOR = 266,
-    NAMES = 267,
-    LAUNCH = 268,
-    CLOCK = 269,
-    RESETMODE = 270,
-    RESET = 271,
-    IDENTIFIER = 272,
-    INTEGER = 273
+    STATE = 262,
+    TRANSITIONS = 263,
+    OUTPUTLOGIC = 264,
+    TYPEBIT = 265,
+    TYPEINTEGER = 266,
+    TYPEVECTOR = 267,
+    NAMES = 268,
+    LAUNCH = 269,
+    CLOCK = 270,
+    RESETMODE = 271,
+    RESET = 272,
+    IF = 273,
+    ELSE = 274,
+    NEG = 275,
+    IDENTIFIER = 276,
+    INTEGER = 277
   };
 #endif
 
@@ -75,6 +79,7 @@ union YYSTYPE
    char* inputs;
    char* outputs;
    char* states;
+   char* state;
    char* transitions;
    char* outputLogic;
    char* typeBit;
@@ -85,10 +90,12 @@ union YYSTYPE
    char* clock;
    char* resetMode;
    char* reset;
+   char* _if;
+   char* _else;
    char* str;
    int integer;
 
-#line 92 "parser.tab.h" /* yacc.c:1909  */
+#line 99 "parser.tab.h" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
