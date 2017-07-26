@@ -5,6 +5,9 @@
 %{
    #include <stdio.h>  /* For printf, etc. */
    #include "StateMachine.hpp"
+   #include "BitInput.hpp"
+   #include "VectorInput.hpp"
+   #include "IntegerInput.hpp"
    // stuff from flex that bison needs to know about:
    extern "C" int yylex();
    extern "C" int yyparse();
@@ -71,7 +74,6 @@
 %% /* The grammar follows.  */
 complete_machine:
    MACHINE IDENTIFIER '{' components '}' {
-      printf( "Found a machine!\n The name is: %s\n", $2 );
       stateMachine.setName( $2 );
    }
    ;
@@ -92,12 +94,15 @@ inputList:
    ;
 
 inputEntry:
-   TYPEBIT IDENTIFIER ';' { printf("Input entry: TYPE: bit ID: %s", $2); }
-   | TYPEINTEGER IDENTIFIER ';' { printf("Input entry: TYPE: integer ID: %s", $2); }
-   | TYPEVECTOR '[' INTEGER ']'  IDENTIFIER ';'
-      {
-         printf("Input entry: TYPE: vector SIZE: %d ID: %s", $3, $5);
-      }
+   TYPEBIT IDENTIFIER ';' {
+      stateMachine.addInput( BitInput( SignalType::bit, $2 ) );
+   }
+   | TYPEINTEGER IDENTIFIER ';' {
+      stateMachine.addInput( IntegerInput( SignalType::integer, $2 ) );
+   }
+   | TYPEVECTOR '[' INTEGER ']'  IDENTIFIER ';' {
+      stateMachine.addInput( VectorInput( SignalType::vector, $5, $3 ) );
+   }
    ;
 
 /* Grammer for outputs{...} block */

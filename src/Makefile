@@ -1,7 +1,7 @@
 parser: lex.yy.c parser.tab.c parser.tab.h StateMachine.o Signal.o BitInput.o \
         VectorInput.o IntegerInput.o
 	g++ parser.tab.c lex.yy.c StateMachine.o Signal.o BitInput.o VectorInput.o \
-	IntegerInput.o -lfl -o parser
+	IntegerInput.o -lfl -o parser -std=c++11
    
 parser.tab.c parser.tab.h: parser.y
 	bison -d --warnings=none parser.y
