@@ -1,6 +1,7 @@
-#include "IntegerInput.cpp"
+#include "IntegerInput.hpp"
 
 IntegerInput::IntegerInput( SignalType type, std::string name )
-   : Signal( SignalType type, std::string name ) {
+   : Signal( type, name ) {
 
 }
+

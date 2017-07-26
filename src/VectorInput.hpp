@@ -4,8 +4,7 @@
 
 class VectorInput: public Signal {
    public:
-      VectorInput( SignalType type, std::string name, int size )
-         : Signal( SignalType type, std::string name );
+      VectorInput( SignalType type, std::string name, int size ); 
       int getSize();
    private:
       int size;

@@ -4,11 +4,13 @@
 
 %{
    #include <stdio.h>  /* For printf, etc. */
+   #include "StateMachine.hpp"
    // stuff from flex that bison needs to know about:
    extern "C" int yylex();
    extern "C" int yyparse();
    extern "C" FILE *yyin;
    void yyerror(const char *);
+   StateMachine stateMachine;
 %}
 
 %union {
@@ -68,7 +70,10 @@
 
 %% /* The grammar follows.  */
 complete_machine:
-   MACHINE IDENTIFIER '{' components '}' { printf( "Found a machine!\n The name is: %s\n", $2 ); }
+   MACHINE IDENTIFIER '{' components '}' {
+      printf( "Found a machine!\n The name is: %s\n", $2 );
+      stateMachine.setName( $2 );
+   }
    ;
 
 components: /* Need one of each component - inputs, outputs, states,

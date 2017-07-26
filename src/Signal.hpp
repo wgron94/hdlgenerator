@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <vector>
 
 enum class SignalType { bit, vector, integer };
 
@@ -11,5 +12,5 @@ class Signal {
    protected:
       SignalType type;
       std::string name;
-}
+};
 

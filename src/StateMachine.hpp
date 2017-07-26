@@ -5,10 +5,10 @@
 
 class StateMachine {
    public:
-      StateMachine( std::string );
+      void setName( std::string );
       void addInput( Signal );
    private:
       std::vector<Signal> inputs;
       std::string name;
-}
+};
 

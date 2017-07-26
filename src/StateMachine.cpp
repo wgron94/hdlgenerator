@@ -1,9 +1,10 @@
 #include "StateMachine.hpp"
 
-StateMachine::StateMachine( std::string name ) {
+void StateMachine::setName( std::string name ) {
    name = name;
 }
 
 void StateMachine::addInput( Signal input ) {
    inputs.push_back( input );
+   printf( "Adding input" );
 }
