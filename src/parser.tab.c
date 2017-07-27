@@ -66,9 +66,11 @@
 
    #include <stdio.h>  /* For printf, etc. */
    #include "StateMachine.hpp"
-   #include "BitInput.hpp"
+   #include "Signal.hpp"
    #include "VectorInput.hpp"
-   #include "IntegerInput.hpp"
+   #include "OutputSignal.hpp"
+   #include "VectorOutput.hpp"
+
    // stuff from flex that bison needs to know about:
    extern "C" int yylex();
    extern "C" int yyparse();
@@ -76,7 +78,7 @@
    void yyerror(const char *);
    StateMachine stateMachine;
 
-#line 80 "parser.tab.c" /* yacc.c:339  */
+#line 82 "parser.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -139,7 +141,7 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 19 "parser.y" /* yacc.c:355  */
+#line 21 "parser.y" /* yacc.c:355  */
 
    char* machine;
    char* inputs;
@@ -161,7 +163,7 @@ union YYSTYPE
    char* str;
    int integer;
 
-#line 165 "parser.tab.c" /* yacc.c:355  */
+#line 167 "parser.tab.c" /* yacc.c:355  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
@@ -176,7 +178,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 180 "parser.tab.c" /* yacc.c:358  */
+#line 182 "parser.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -475,9 +477,9 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    76,    76,    83,    88,    92,    93,    97,   100,   103,
-     110,   114,   115,   119,   123,   127,   135,   139,   142,   143,
-     144,   145,   149,   150,   154,   158,   190,   194,   195
+       0,    78,    78,    85,    90,    94,    95,    99,   102,   105,
+     112,   116,   117,   121,   129,   137,   149,   153,   156,   157,
+     158,   159,   163,   164,   168,   172,   204,   208,   209
 };
 #endif
 
@@ -1299,93 +1301,105 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 76 "parser.y" /* yacc.c:1646  */
+#line 78 "parser.y" /* yacc.c:1646  */
     {
       stateMachine.setName( (yyvsp[-3].str) );
    }
-#line 1307 "parser.tab.c" /* yacc.c:1646  */
+#line 1309 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 97 "parser.y" /* yacc.c:1646  */
+#line 99 "parser.y" /* yacc.c:1646  */
     {
-      stateMachine.addInput( BitInput( SignalType::bit, (yyvsp[-1].str) ) );
+      stateMachine.addInput( Signal( SignalType::bit, (yyvsp[-1].str) ) );
    }
-#line 1315 "parser.tab.c" /* yacc.c:1646  */
+#line 1317 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 100 "parser.y" /* yacc.c:1646  */
+#line 102 "parser.y" /* yacc.c:1646  */
     {
-      stateMachine.addInput( IntegerInput( SignalType::integer, (yyvsp[-1].str) ) );
+      stateMachine.addInput( Signal( SignalType::integer, (yyvsp[-1].str) ) );
    }
-#line 1323 "parser.tab.c" /* yacc.c:1646  */
+#line 1325 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 103 "parser.y" /* yacc.c:1646  */
+#line 105 "parser.y" /* yacc.c:1646  */
     {
       stateMachine.addInput( VectorInput( SignalType::vector, (yyvsp[-1].str), (yyvsp[-3].integer) ) );
    }
-#line 1331 "parser.tab.c" /* yacc.c:1646  */
+#line 1333 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 120 "parser.y" /* yacc.c:1646  */
+#line 122 "parser.y" /* yacc.c:1646  */
     {
          printf( "Output: TYPE: bit ID: %s VALUE: %d", (yyvsp[-3].str), (yyvsp[-1].integer) );
+         Default defaultValue;
+         defaultValue.b = (yyvsp[-1].integer) ? true : false;
+         stateMachine.addOutput( OutputSignal( SignalType::bit, (yyvsp[-3].str),
+                                               defaultValue ) );
       }
-#line 1339 "parser.tab.c" /* yacc.c:1646  */
+#line 1345 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 124 "parser.y" /* yacc.c:1646  */
+#line 130 "parser.y" /* yacc.c:1646  */
     {
          printf( "Output: TYPE: integer ID: %s VALUE: %d", (yyvsp[-3].str), (yyvsp[-1].integer) );
+         Default defaultValue;
+         defaultValue.i = (yyvsp[-1].integer);
+         stateMachine.addOutput( OutputSignal( SignalType::integer, (yyvsp[-3].str),
+                                               defaultValue ) );
       }
-#line 1347 "parser.tab.c" /* yacc.c:1646  */
+#line 1357 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 128 "parser.y" /* yacc.c:1646  */
+#line 138 "parser.y" /* yacc.c:1646  */
     {
          printf( "Output: TYPE: vector SIZE: %d ID: %s VALUE: %d", (yyvsp[-5].integer), (yyvsp[-3].str), (yyvsp[-1].integer) );
+         Default defaultValue;
+         defaultValue.i = (yyvsp[-1].integer);
+         stateMachine.addOutput( VectorOutput( SignalType::vector, (yyvsp[-3].str),
+                                               defaultValue, (yyvsp[-5].integer) ) );
       }
-#line 1355 "parser.tab.c" /* yacc.c:1646  */
+#line 1369 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 142 "parser.y" /* yacc.c:1646  */
+#line 156 "parser.y" /* yacc.c:1646  */
     { printf("Found names");}
-#line 1361 "parser.tab.c" /* yacc.c:1646  */
+#line 1375 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 143 "parser.y" /* yacc.c:1646  */
+#line 157 "parser.y" /* yacc.c:1646  */
     {printf("Found launch");}
-#line 1367 "parser.tab.c" /* yacc.c:1646  */
+#line 1381 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 144 "parser.y" /* yacc.c:1646  */
+#line 158 "parser.y" /* yacc.c:1646  */
     {printf("Found clock");}
-#line 1373 "parser.tab.c" /* yacc.c:1646  */
+#line 1387 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 145 "parser.y" /* yacc.c:1646  */
+#line 159 "parser.y" /* yacc.c:1646  */
     {printf("Found reset");}
-#line 1379 "parser.tab.c" /* yacc.c:1646  */
+#line 1393 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 149 "parser.y" /* yacc.c:1646  */
+#line 163 "parser.y" /* yacc.c:1646  */
     { printf( "ID: %s", (yyvsp[0].str) ); }
-#line 1385 "parser.tab.c" /* yacc.c:1646  */
+#line 1399 "parser.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1389 "parser.tab.c" /* yacc.c:1646  */
+#line 1403 "parser.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1613,7 +1627,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 199 "parser.y" /* yacc.c:1906  */
+#line 213 "parser.y" /* yacc.c:1906  */
 
 
 /* Called by yyparse on error.  */

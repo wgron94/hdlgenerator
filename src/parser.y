@@ -5,9 +5,11 @@
 %{
    #include <stdio.h>  /* For printf, etc. */
    #include "StateMachine.hpp"
-   #include "BitInput.hpp"
+   #include "Signal.hpp"
    #include "VectorInput.hpp"
-   #include "IntegerInput.hpp"
+   #include "OutputSignal.hpp"
+   #include "VectorOutput.hpp"
+
    // stuff from flex that bison needs to know about:
    extern "C" int yylex();
    extern "C" int yyparse();
@@ -95,10 +97,10 @@ inputList:
 
 inputEntry:
    TYPEBIT IDENTIFIER ';' {
-      stateMachine.addInput( BitInput( SignalType::bit, $2 ) );
+      stateMachine.addInput( Signal( SignalType::bit, $2 ) );
    }
    | TYPEINTEGER IDENTIFIER ';' {
-      stateMachine.addInput( IntegerInput( SignalType::integer, $2 ) );
+      stateMachine.addInput( Signal( SignalType::integer, $2 ) );
    }
    | TYPEVECTOR '[' INTEGER ']'  IDENTIFIER ';' {
       stateMachine.addInput( VectorInput( SignalType::vector, $5, $3 ) );
@@ -119,14 +121,26 @@ outputEntry:
    TYPEBIT IDENTIFIER '=' INTEGER ';' 
       {
          printf( "Output: TYPE: bit ID: %s VALUE: %d", $2, $4 );
+         Default defaultValue;
+         defaultValue.b = $4 ? true : false;
+         stateMachine.addOutput( OutputSignal( SignalType::bit, $2,
+                                               defaultValue ) );
       }
    | TYPEINTEGER IDENTIFIER '=' INTEGER ';' 
       {
          printf( "Output: TYPE: integer ID: %s VALUE: %d", $2, $4 );
+         Default defaultValue;
+         defaultValue.i = $4;
+         stateMachine.addOutput( OutputSignal( SignalType::integer, $2,
+                                               defaultValue ) );
       }
    | TYPEVECTOR '[' INTEGER ']' IDENTIFIER '=' INTEGER ';' 
       {
          printf( "Output: TYPE: vector SIZE: %d ID: %s VALUE: %d", $3, $5, $7 );
+         Default defaultValue;
+         defaultValue.i = $7;
+         stateMachine.addOutput( VectorOutput( SignalType::vector, $5,
+                                               defaultValue, $3 ) );
       }
    ;
 

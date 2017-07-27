@@ -5,6 +5,3 @@ VectorInput::VectorInput( SignalType type, std::string name, int size )
    size = size;
 }
 
-int VectorInput::getSize() {
-   return size;
-}
