@@ -65,20 +65,24 @@
 #line 5 "parser.y" /* yacc.c:339  */
 
    #include <stdio.h>  /* For printf, etc. */
+   #include <iostream>
    #include "StateMachine.hpp"
    #include "Signal.hpp"
    #include "VectorInput.hpp"
    #include "OutputSignal.hpp"
    #include "VectorOutput.hpp"
+   #include "VhdlWriter.hpp"
 
    // stuff from flex that bison needs to know about:
    extern "C" int yylex();
    extern "C" int yyparse();
    extern "C" FILE *yyin;
    void yyerror(const char *);
+   //std::unique_ptr<StateMachine> stateMachine( new StateMachine() );
+   //StateMachine *stateMachine = new StateMachine( );
    StateMachine stateMachine;
 
-#line 82 "parser.tab.c" /* yacc.c:339  */
+#line 86 "parser.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -141,7 +145,7 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 21 "parser.y" /* yacc.c:355  */
+#line 25 "parser.y" /* yacc.c:355  */
 
    char* machine;
    char* inputs;
@@ -163,7 +167,7 @@ union YYSTYPE
    char* str;
    int integer;
 
-#line 167 "parser.tab.c" /* yacc.c:355  */
+#line 171 "parser.tab.c" /* yacc.c:355  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
@@ -178,7 +182,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 182 "parser.tab.c" /* yacc.c:358  */
+#line 186 "parser.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -427,7 +431,7 @@ union yyalloc
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  17
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  28
+#define YYNRULES  29
 /* YYNSTATES -- Number of states.  */
 #define YYNSTATES  90
 
@@ -477,9 +481,9 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    78,    78,    85,    90,    94,    95,    99,   102,   105,
-     112,   116,   117,   121,   129,   137,   149,   153,   156,   157,
-     158,   159,   163,   164,   168,   172,   204,   208,   209
+       0,    82,    82,    90,    95,    99,   100,   104,   108,   112,
+     120,   124,   125,   129,   135,   141,   151,   155,   156,   159,
+     160,   161,   162,   166,   167,   171,   175,   207,   211,   212
 };
 #endif
 
@@ -544,13 +548,13 @@ static const yytype_uint8 yydefact[] =
 {
        0,     0,     0,     0,     1,     0,     0,     0,     0,     5,
        2,     0,     0,     0,    11,     0,     0,     0,     0,     0,
-       4,     6,     0,     0,     0,     0,     0,     0,     0,     0,
+       4,     6,     0,    17,     0,     0,     0,     0,     0,     0,
        0,     0,    10,    12,     0,     0,     0,     0,     0,     0,
-      25,     0,     3,     7,     8,     0,     0,     0,     0,     0,
-       0,     0,     0,    16,     0,     0,    27,     0,     0,     0,
-       0,    22,     0,     0,     0,     0,     0,    24,     0,     0,
-       0,     0,     0,    18,     0,    19,    20,     0,    17,    28,
-      26,     9,    13,    14,     0,    23,    21,     0,     0,    15
+      26,     0,     3,     7,     8,     0,     0,     0,     0,     0,
+       0,     0,     0,    16,     0,     0,    28,     0,     0,     0,
+       0,    23,     0,     0,     0,     0,     0,    25,     0,     0,
+       0,     0,     0,    19,     0,    20,    21,     0,    18,    29,
+      27,     9,    13,    14,     0,    24,    22,     0,     0,    15
 };
 
   /* YYPGOTO[NTERM-NUM].  */
@@ -615,16 +619,16 @@ static const yytype_uint8 yystos[] =
 static const yytype_uint8 yyr1[] =
 {
        0,    39,    40,    41,    42,    43,    43,    44,    44,    44,
-      45,    46,    46,    47,    47,    47,    48,    49,    50,    50,
-      50,    50,    51,    51,    52,    53,    54,    55,    55
+      45,    46,    46,    47,    47,    47,    48,    49,    49,    50,
+      50,    50,    50,    51,    51,    52,    53,    54,    55,    55
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
        0,     2,     5,     5,     4,     0,     2,     3,     3,     6,
-       4,     0,     2,     5,     5,     8,     4,     4,     4,     4,
-       4,     5,     1,     3,     4,     0,     4,     0,     2
+       4,     0,     2,     5,     5,     8,     4,     0,     4,     4,
+       4,     4,     5,     1,     3,     4,     0,     4,     0,     2
 };
 
 
@@ -1301,105 +1305,118 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 78 "parser.y" /* yacc.c:1646  */
+#line 82 "parser.y" /* yacc.c:1646  */
     {
-      stateMachine.setName( (yyvsp[-3].str) );
+      std::string name( (yyvsp[-3].str) );
+      stateMachine.setName( name );
    }
-#line 1309 "parser.tab.c" /* yacc.c:1646  */
+#line 1314 "parser.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 4:
+#line 95 "parser.y" /* yacc.c:1646  */
+    { }
+#line 1320 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 99 "parser.y" /* yacc.c:1646  */
+#line 104 "parser.y" /* yacc.c:1646  */
     {
-      stateMachine.addInput( Signal( SignalType::bit, (yyvsp[-1].str) ) );
+      stateMachine.addInput( std::unique_ptr<Signal>( new Signal(
+         SignalType::bit, (yyvsp[-1].str) ) ) );
    }
-#line 1317 "parser.tab.c" /* yacc.c:1646  */
+#line 1329 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 102 "parser.y" /* yacc.c:1646  */
+#line 108 "parser.y" /* yacc.c:1646  */
     {
-      stateMachine.addInput( Signal( SignalType::integer, (yyvsp[-1].str) ) );
+      stateMachine.addInput( std::unique_ptr<Signal>( new Signal(
+         SignalType::integer, (yyvsp[-1].str) ) ) );
    }
-#line 1325 "parser.tab.c" /* yacc.c:1646  */
+#line 1338 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 105 "parser.y" /* yacc.c:1646  */
+#line 112 "parser.y" /* yacc.c:1646  */
     {
-      stateMachine.addInput( VectorInput( SignalType::vector, (yyvsp[-1].str), (yyvsp[-3].integer) ) );
+      stateMachine.addInput( std::unique_ptr<Signal>( new VectorInput(
+         SignalType::vector, (yyvsp[-1].str), (yyvsp[-3].integer) ) ) );
    }
-#line 1333 "parser.tab.c" /* yacc.c:1646  */
+#line 1347 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 122 "parser.y" /* yacc.c:1646  */
+#line 129 "parser.y" /* yacc.c:1646  */
     {
-         printf( "Output: TYPE: bit ID: %s VALUE: %d", (yyvsp[-3].str), (yyvsp[-1].integer) );
-         Default defaultValue;
-         defaultValue.b = (yyvsp[-1].integer) ? true : false;
-         stateMachine.addOutput( OutputSignal( SignalType::bit, (yyvsp[-3].str),
-                                               defaultValue ) );
-      }
-#line 1345 "parser.tab.c" /* yacc.c:1646  */
+      Default defaultValue;
+      defaultValue.b = (yyvsp[-1].integer) ? true : false;
+      stateMachine.addOutput( std::unique_ptr<OutputSignal>( new OutputSignal(
+         SignalType::bit, (yyvsp[-3].str), defaultValue ) ) );
+   }
+#line 1358 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 130 "parser.y" /* yacc.c:1646  */
+#line 135 "parser.y" /* yacc.c:1646  */
     {
-         printf( "Output: TYPE: integer ID: %s VALUE: %d", (yyvsp[-3].str), (yyvsp[-1].integer) );
-         Default defaultValue;
-         defaultValue.i = (yyvsp[-1].integer);
-         stateMachine.addOutput( OutputSignal( SignalType::integer, (yyvsp[-3].str),
-                                               defaultValue ) );
-      }
-#line 1357 "parser.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 15:
-#line 138 "parser.y" /* yacc.c:1646  */
-    {
-         printf( "Output: TYPE: vector SIZE: %d ID: %s VALUE: %d", (yyvsp[-5].integer), (yyvsp[-3].str), (yyvsp[-1].integer) );
-         Default defaultValue;
-         defaultValue.i = (yyvsp[-1].integer);
-         stateMachine.addOutput( VectorOutput( SignalType::vector, (yyvsp[-3].str),
-                                               defaultValue, (yyvsp[-5].integer) ) );
-      }
+      Default defaultValue;
+      defaultValue.i = (yyvsp[-1].integer);
+      stateMachine.addOutput( std::unique_ptr<OutputSignal>( new OutputSignal(
+         SignalType::integer, (yyvsp[-3].str), defaultValue ) ) );
+   }
 #line 1369 "parser.tab.c" /* yacc.c:1646  */
     break;
 
-  case 18:
-#line 156 "parser.y" /* yacc.c:1646  */
-    { printf("Found names");}
-#line 1375 "parser.tab.c" /* yacc.c:1646  */
+  case 15:
+#line 141 "parser.y" /* yacc.c:1646  */
+    {
+      Default defaultValue;
+      defaultValue.i = (yyvsp[-1].integer);
+      stateMachine.addOutput( std::unique_ptr<OutputSignal>( new VectorOutput(
+         SignalType::vector, (yyvsp[-3].str), defaultValue, (yyvsp[-5].integer) ) ) );
+   }
+#line 1380 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 157 "parser.y" /* yacc.c:1646  */
-    {printf("Found launch");}
-#line 1381 "parser.tab.c" /* yacc.c:1646  */
+#line 159 "parser.y" /* yacc.c:1646  */
+    { }
+#line 1386 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 158 "parser.y" /* yacc.c:1646  */
-    {printf("Found clock");}
-#line 1387 "parser.tab.c" /* yacc.c:1646  */
+#line 160 "parser.y" /* yacc.c:1646  */
+    { }
+#line 1392 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 159 "parser.y" /* yacc.c:1646  */
-    {printf("Found reset");}
-#line 1393 "parser.tab.c" /* yacc.c:1646  */
+#line 161 "parser.y" /* yacc.c:1646  */
+    { }
+#line 1398 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 163 "parser.y" /* yacc.c:1646  */
-    { printf( "ID: %s", (yyvsp[0].str) ); }
-#line 1399 "parser.tab.c" /* yacc.c:1646  */
+#line 162 "parser.y" /* yacc.c:1646  */
+    { }
+#line 1404 "parser.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 23:
+#line 166 "parser.y" /* yacc.c:1646  */
+    { }
+#line 1410 "parser.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 24:
+#line 167 "parser.y" /* yacc.c:1646  */
+    { }
+#line 1416 "parser.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1403 "parser.tab.c" /* yacc.c:1646  */
+#line 1420 "parser.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1627,25 +1644,37 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 213 "parser.y" /* yacc.c:1906  */
+#line 216 "parser.y" /* yacc.c:1906  */
 
 
 /* Called by yyparse on error.  */
-void
-yyerror (char const *s)
-{
-  fprintf (stderr, "%s\n", s);
+void yyerror( char const *s ) {
+  fprintf( stderr, "%s\n", s );
 }
 
-int main (int argc, char const* argv[]){
+int main( int argc, char const* argv[] ) {
+   if( argc != 2 ) {
+      std::cout << "No file name specified" << std::endl;
+      return 1; 
+   }
    // open a file handle to a particular file:
-	FILE *input = fopen("test.sm", "r");
+	FILE *input = fopen( argv[1], "r" );
 	// make sure it is valid:
 	if( !input ) {
-		printf( "Can't open file!\n" );
-		return -1;
+      std::cout << "Can't open file" << std::endl;
+		return 1;
 	}
 	// set flex to read from it instead of defaulting to STDIN:
 	yyin = input;
-   return yyparse( );
+   std::string fileName = argv[1];
+   std::string fileNameNoExtension = fileName.substr( 0,
+      fileName.find_last_of( "." ) );
+   if( !yyparse( ) ) {
+      VhdlWriter writer( fileNameNoExtension, stateMachine ); 
+      writer.generate();
+   }
+   else{ printf( " yyparse failed " ); }
+   fclose( input );
+   return 0;
 }
+

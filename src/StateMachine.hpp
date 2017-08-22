@@ -1,17 +1,22 @@
 #pragma once
 
+#include <string>
+#include <vector>
+#include <memory>
 #include "Signal.hpp"
 #include "OutputSignal.hpp"
-#include <string>
 
 class StateMachine {
    public:
       void setName( std::string );
-      void addInput( Signal );
-      void addOutput( OutputSignal );
+      std::string getName();
+      void addInput( std::unique_ptr<Signal> );
+      void addOutput( std::unique_ptr<OutputSignal> );
+      const std::vector<std::unique_ptr<Signal>> & getInputs();
+      const std::vector<std::unique_ptr<OutputSignal>> & getOutputs();
    private:
       std::string name;
-      std::vector<Signal> inputs;
-      std::vector<OutputSignal> outputs;
+      std::vector<std::unique_ptr<Signal>> inputs;
+      std::vector<std::unique_ptr<OutputSignal>> outputs;
 };
 

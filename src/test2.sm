@@ -1,0 +1,7 @@
+machine test2SM {
+   inputs{}
+   outputs{}
+   states{}
+   transitions{}
+   outputLogic{}
+}

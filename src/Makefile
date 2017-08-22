@@ -1,10 +1,11 @@
 parser: lex.yy.c parser.tab.c parser.tab.h StateMachine.o Signal.o \
-        VectorInput.o OutputSignal.o VectorOutput.o
+        VectorInput.o OutputSignal.o VectorOutput.o VhdlWriter.o
 	g++ parser.tab.c lex.yy.c StateMachine.o Signal.o VectorInput.o \
-   OutputSignal.o VectorOutput.o -lfl -o parser -std=c++11
+	OutputSignal.o VectorOutput.o VhdlWriter.o -lfl \
+	-o parser -std=c++11
    
 parser.tab.c parser.tab.h: parser.y
-	bison -d --warnings=none parser.y
+	bison -d parser.y
 
 lex.yy.c: parser.l parser.tab.h
 	flex parser.l
@@ -23,4 +24,7 @@ OutputSignal.o: OutputSignal.cpp OutputSignal.hpp
 
 VectorOutput.o: VectorOutput.cpp VectorOutput.hpp
 	g++ -c VectorOutput.cpp -std=c++11
+
+VhdlWriter.o: VhdlWriter.cpp VhdlWriter.hpp
+	g++ -c VhdlWriter.cpp -std=c++11
 

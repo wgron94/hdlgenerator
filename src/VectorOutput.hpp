@@ -4,7 +4,9 @@
 class VectorOutput: public OutputSignal {
    public:
       VectorOutput( SignalType, std::string, Default, int );
-   protected:
+      int getSize();
+      std::string getTypeStrVhdl();
+   private:
       Default defaultValue;
       int size;
 };

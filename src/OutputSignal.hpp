@@ -9,6 +9,7 @@ union Default {
 class OutputSignal: public Signal {
    public:
       OutputSignal( SignalType, std::string, Default );
+      //virtual std::string getTypeStrVhdl();
    protected:
       Default defaultValue;
 };

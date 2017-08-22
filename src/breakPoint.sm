@@ -1,0 +1,12 @@
+machine testSM {
+   inputs{
+      bit testBit;
+   }
+   outputs{
+   }
+   states{
+   }
+   transitions{}
+   outputLogic{}
+}
+

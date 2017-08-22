@@ -4,17 +4,21 @@
 
 %{
    #include <stdio.h>  /* For printf, etc. */
+   #include <iostream>
    #include "StateMachine.hpp"
    #include "Signal.hpp"
    #include "VectorInput.hpp"
    #include "OutputSignal.hpp"
    #include "VectorOutput.hpp"
+   #include "VhdlWriter.hpp"
 
    // stuff from flex that bison needs to know about:
    extern "C" int yylex();
    extern "C" int yyparse();
    extern "C" FILE *yyin;
    void yyerror(const char *);
+   //std::unique_ptr<StateMachine> stateMachine( new StateMachine() );
+   //StateMachine *stateMachine = new StateMachine( );
    StateMachine stateMachine;
 %}
 
@@ -76,7 +80,8 @@
 %% /* The grammar follows.  */
 complete_machine:
    MACHINE IDENTIFIER '{' components '}' {
-      stateMachine.setName( $2 );
+      std::string name( $2 );
+      stateMachine.setName( name );
    }
    ;
 
@@ -87,7 +92,7 @@ components: /* Need one of each component - inputs, outputs, states,
 
 /* Grammer for inputs{...} block */
 inputs:
-   INPUTS '{' inputList '}'
+   INPUTS '{' inputList '}' { }
    ;
 
 inputList:
@@ -97,13 +102,16 @@ inputList:
 
 inputEntry:
    TYPEBIT IDENTIFIER ';' {
-      stateMachine.addInput( Signal( SignalType::bit, $2 ) );
+      stateMachine.addInput( std::unique_ptr<Signal>( new Signal(
+         SignalType::bit, $2 ) ) );
    }
    | TYPEINTEGER IDENTIFIER ';' {
-      stateMachine.addInput( Signal( SignalType::integer, $2 ) );
+      stateMachine.addInput( std::unique_ptr<Signal>( new Signal(
+         SignalType::integer, $2 ) ) );
    }
    | TYPEVECTOR '[' INTEGER ']'  IDENTIFIER ';' {
-      stateMachine.addInput( VectorInput( SignalType::vector, $5, $3 ) );
+      stateMachine.addInput( std::unique_ptr<Signal>( new VectorInput(
+         SignalType::vector, $5, $3 ) ) );
    }
    ;
 
@@ -118,30 +126,24 @@ outputList:
    ;
 
 outputEntry:
-   TYPEBIT IDENTIFIER '=' INTEGER ';' 
-      {
-         printf( "Output: TYPE: bit ID: %s VALUE: %d", $2, $4 );
-         Default defaultValue;
-         defaultValue.b = $4 ? true : false;
-         stateMachine.addOutput( OutputSignal( SignalType::bit, $2,
-                                               defaultValue ) );
-      }
-   | TYPEINTEGER IDENTIFIER '=' INTEGER ';' 
-      {
-         printf( "Output: TYPE: integer ID: %s VALUE: %d", $2, $4 );
-         Default defaultValue;
-         defaultValue.i = $4;
-         stateMachine.addOutput( OutputSignal( SignalType::integer, $2,
-                                               defaultValue ) );
-      }
-   | TYPEVECTOR '[' INTEGER ']' IDENTIFIER '=' INTEGER ';' 
-      {
-         printf( "Output: TYPE: vector SIZE: %d ID: %s VALUE: %d", $3, $5, $7 );
-         Default defaultValue;
-         defaultValue.i = $7;
-         stateMachine.addOutput( VectorOutput( SignalType::vector, $5,
-                                               defaultValue, $3 ) );
-      }
+   TYPEBIT IDENTIFIER '=' INTEGER ';' {
+      Default defaultValue;
+      defaultValue.b = $4 ? true : false;
+      stateMachine.addOutput( std::unique_ptr<OutputSignal>( new OutputSignal(
+         SignalType::bit, $2, defaultValue ) ) );
+   }
+   | TYPEINTEGER IDENTIFIER '=' INTEGER ';' {
+      Default defaultValue;
+      defaultValue.i = $4;
+      stateMachine.addOutput( std::unique_ptr<OutputSignal>( new OutputSignal(
+         SignalType::integer, $2, defaultValue ) ) );
+   }
+   | TYPEVECTOR '[' INTEGER ']' IDENTIFIER '=' INTEGER ';' {
+      Default defaultValue;
+      defaultValue.i = $7;
+      stateMachine.addOutput( std::unique_ptr<OutputSignal>( new VectorOutput(
+         SignalType::vector, $5, defaultValue, $3 ) ) );
+   }
    ;
 
 /* Grammer for states{...} block */
@@ -150,18 +152,19 @@ states:
    ;
 
 stateList:
-   stateItem stateItem stateItem stateItem
+   %empty
+   | stateItem stateItem stateItem stateItem
 
 stateItem:
-   NAMES '=' listOfIdentifiers ';' { printf("Found names");}
-   | LAUNCH '=' IDENTIFIER ';' {printf("Found launch");}
-   | CLOCK '=' IDENTIFIER ';' {printf("Found clock");}
-   | RESETMODE RESET '=' IDENTIFIER ';' {printf("Found reset");}
+   NAMES '=' listOfIdentifiers ';' { }
+   | LAUNCH '=' IDENTIFIER ';' { }
+   | CLOCK '=' IDENTIFIER ';' { }
+   | RESETMODE RESET '=' IDENTIFIER ';' { }
    ;
 
 listOfIdentifiers:
-   IDENTIFIER { printf( "ID: %s", $1 ); }
-   | listOfIdentifiers ',' IDENTIFIER
+   IDENTIFIER { }
+   | listOfIdentifiers ',' IDENTIFIER { }
 
 /* Grammer for transitions{...} block */
 transitions:
@@ -213,21 +216,33 @@ outputLogicList:
 %%
 
 /* Called by yyparse on error.  */
-void
-yyerror (char const *s)
-{
-  fprintf (stderr, "%s\n", s);
+void yyerror( char const *s ) {
+  fprintf( stderr, "%s\n", s );
 }
 
-int main (int argc, char const* argv[]){
+int main( int argc, char const* argv[] ) {
+   if( argc != 2 ) {
+      std::cout << "No file name specified" << std::endl;
+      return 1; 
+   }
    // open a file handle to a particular file:
-	FILE *input = fopen("test.sm", "r");
+	FILE *input = fopen( argv[1], "r" );
 	// make sure it is valid:
 	if( !input ) {
-		printf( "Can't open file!\n" );
-		return -1;
+      std::cout << "Can't open file" << std::endl;
+		return 1;
 	}
 	// set flex to read from it instead of defaulting to STDIN:
 	yyin = input;
-   return yyparse( );
+   std::string fileName = argv[1];
+   std::string fileNameNoExtension = fileName.substr( 0,
+      fileName.find_last_of( "." ) );
+   if( !yyparse( ) ) {
+      VhdlWriter writer( fileNameNoExtension, stateMachine ); 
+      writer.generate();
+   }
+   else{ printf( " yyparse failed " ); }
+   fclose( input );
+   return 0;
 }
+
