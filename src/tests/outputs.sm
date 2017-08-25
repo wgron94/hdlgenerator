@@ -1,0 +1,12 @@
+machine outputsTest {
+   inputs{}
+   outputs{
+      bit outputBit = 10;
+      bit bitTesting = 0;
+      integer outputInteger = 12;
+      vector[3] outputVector = 0b101;
+   }
+   states{}
+   transitions{}
+   outputLogic{}
+}

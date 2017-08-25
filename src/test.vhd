@@ -15,3 +15,4 @@ ENTITY testSM IS
       outputInteger: out integer;
       outputVector: out std_logic_vector( 1 downto 0 ) );
 END testSM
+
