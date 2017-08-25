@@ -31,4 +31,6 @@ VhdlWriter.o: VhdlWriter.cpp VhdlWriter.hpp
 check:
 	./tests/inputs.sh
 	./tests/outputs.sh
+	./tests/inout.sh
+
 
