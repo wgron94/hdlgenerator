@@ -28,3 +28,6 @@ VectorOutput.o: VectorOutput.cpp VectorOutput.hpp
 VhdlWriter.o: VhdlWriter.cpp VhdlWriter.hpp
 	g++ -c VhdlWriter.cpp -std=c++11
 
+check:
+	./tests/inputs.sh
+

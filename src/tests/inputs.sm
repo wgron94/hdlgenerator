@@ -1,0 +1,14 @@
+machine inputsTest {
+   inputs{
+      bit testBit;
+      vector[5] testVector;
+      vector[0xA] testHex;
+      vector[0b11] testBin;
+      vector[011] testOctal;
+      integer testInt;
+   }
+   outputs{}
+   states{}
+   transitions{}
+   outputLogic{}
+}

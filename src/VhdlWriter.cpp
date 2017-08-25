@@ -18,7 +18,6 @@ stateMachine( stateMachine_ ){
 }
 
 int VhdlWriter::generate() {
-   std::cout << "The filename is: " << fileName << std::endl;
    /* Open output file for writing */
 
    outStream.open( fileName.c_str() );
@@ -26,11 +25,26 @@ int VhdlWriter::generate() {
       std::cout << "Can't open file" << std::endl;
       return 1;
 	}
-   
-   if( writeEntity( ) ) {
+
+   if( writePreamble() ) {
       return 1;
    }
+   
+   if( writeEntity() ) {
+      return 1;
+   }
+
+   /* Write one newline at the end */
+   outStream << std::endl;
+
    outStream.close();
+   return 0;
+}
+
+int VhdlWriter::writePreamble() {
+   outStream << "LIBRARY ieee;" << std::endl;
+   outStream << "USE iee.std_logic_1164.all;" << std::endl;
+   outStream << "USE iee.numeric_std.all;" << std::endl << std::endl;
    return 0;
 }
 

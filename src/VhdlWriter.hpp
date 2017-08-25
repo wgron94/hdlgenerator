@@ -14,5 +14,6 @@ class VhdlWriter {
       StateMachine & stateMachine;
       FILE *output;
       std::ofstream outStream;
+      int writePreamble();
       int writeEntity();
 };
