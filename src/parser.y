@@ -153,13 +153,22 @@ states:
 
 stateList:
    %empty
-   | stateItem stateItem stateItem stateItem
+   | stateNames launchState clockName resetState
 
-stateItem:
+stateNames:
    NAMES '=' listOfIdentifiers ';' { }
-   | LAUNCH '=' IDENTIFIER ';' { }
-   | CLOCK '=' IDENTIFIER ';' { }
-   | RESETMODE RESET '=' IDENTIFIER ';' { }
+   ;
+
+launchState:
+   LAUNCH '=' IDENTIFIER ';' { }
+   ;
+
+clockName:
+   CLOCK '=' IDENTIFIER ';' { }
+   ;
+
+resetState:
+   RESETMODE RESET '=' IDENTIFIER ';' { }
    ;
 
 listOfIdentifiers:

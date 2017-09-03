@@ -78,10 +78,21 @@ int VhdlWriter::writeEntity() {
       outStream << " );" << std::endl;
    }
 
-   /* Write END statement */
    outStream << "END " << stateMachine.getName() << std::endl;
 
    return 0;
 }
 
+int VhdlWriter::writeArchitecture() {
+   outStream << "ARCHITECTURE behavioural OF " << stateMachine.getName()
+      << " IS" << std::endl;
+   outStream << tab() << "TYPE STATE_TYPE IS ( ";
+   
+   for( auto const& input : stateMachine.getInputs() ) {
+      outStream << tab( 2 ) << input->getName() << ": in "
+         << input->getTypeStrVhdl() << ";" << std::endl;
+   }
+   
 
+   return 0;
+}

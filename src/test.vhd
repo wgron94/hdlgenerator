@@ -13,6 +13,6 @@ ENTITY testSM IS
       outputBit: out std_logic;
       bitTesting: out std_logic;
       outputInteger: out integer;
-      outputVector: out std_logic_vector( 1 downto 0 ) );
+      outputVector: out std_logic_vector( 2 downto 0 ) );
 END testSM
 

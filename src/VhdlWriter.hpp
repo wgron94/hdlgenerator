@@ -16,4 +16,5 @@ class VhdlWriter {
       std::ofstream outStream;
       int writePreamble();
       int writeEntity();
+      int writeArchitecture();
 };
